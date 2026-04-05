@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Detail</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/inbox.css' %}">
+</head>
+<body>
+    <header>
+        <div class="topbar d-flex">
+            <div class="logo-menu-wrap d-flex">
+                <p class="top-icons menu-icon">
+                    ☰
+                </p>
+                <div class="logo-wrap">
+                    <a href="/">
+                        <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_dark_1x_r5.png" alt="Logo">
+                    </a>
+                </div>
+            </div>
+            <div class="search-help-setting-wrap d-flex">
+                <div class="search-container d-flex">
+                    <i class="top-icons bi bi-search"></i>
+                    <input type="text" placeholder="Search mail" class="search-input">
+                    <i class="top-icons bi bi-sliders"></i>
+                </div>
+                <div class="icon-box">
+                    <i class="top-icons bi bi-question-circle"></i>
+                    <i class="top-icons bi bi-gear"></i>
+                </div>
+            </div>
+            <div class="google-apps-account-wrap d-flex">
+                <i class="top-icons bi bi-grid-3x3-gap text-light me-3"></i>
+                    <button class="top-icons B-icon">B</button>
+            </div>
+        </div>
+    </header>
+
+<main class="d-flex">
+        <!-- Sidebar -->
+         <div class="sidebar-wrap">
+            <button class="compose-wrap" data-bs-toggle="modal" data-bs-target="#composeModal" style="border: none;">
+                Compose
+            </button>
+            <div class="modal fade" id="composeModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'compose' %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                            <h5 class="modal-title">New Message</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+
+                            <input name="sender" class="form-control mb-2" placeholder="From">
+                            <input name="receiver" class="form-control mb-2" placeholder="To">
+                            <input name="subject" class="form-control mb-2" placeholder="Subject">
+                            <textarea name="body" class="form-control" placeholder="Message"></textarea>
+
+                            </div>
+
+                            <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-btns-wrap">
+                <ul>
+                    <!-- <li class="d-flex sidebar-btns sidebar-inbox-btn"><i class="bi bi-inbox"></i>Inbox</li> -->
+                    <li class="d-flex"><a class="sidebar-btns" href="/"><i class="bi bi-inbox"></i>Inbox</a></li>
+                    <!-- <li class="d-flex sidebar-btns"><i class="bi bi-star"></i>Starred</li> -->
+                    <!-- <li class="d-flex sidebar-btns"><i class="bi bi-clock"></i>Snoozed</li> -->
+                    <li class="d-flex"><a class="sidebar-btns" href="/sent/"><i class="bi bi-send"></i>Sent</a></li>
+                    <!-- <li class="d-flex sidebar-btns"><i class="bi bi-file-earmark"></i>Drafts</li> -->
+                    <!-- <li class="d-flex sidebar-btns"><i class="bi bi-info-circle"></i>Spam</li> -->
+                    <!-- <li class="d-flex sidebar-btns"><i class="bi bi-bag"></i>Purchase</li> -->
+                </ul>
+            </div>           
+        </div>
+
+        <div class="content-wrap">
+            <div class="content">
+                <div class="content-top">
+                    <div class="top-btns-wrap d-flex">
+                        <i class="bi bi-square content-top-icons"></i>
+                        <i class="bi bi-arrow-clockwise content-top-icons"></i>
+                        <i class="bi bi-three-dots-vertical content-top-icons"></i>
+                    </div>
+                    <div class="pagination d-flex">
+                        <p>1-42 of 42</p>
+                        <i class="bi bi-chevron-left content-top-icons"></i>
+                        <i class="bi bi-chevron-right content-top-icons"></i>
+                    </div>
+                </div>
+                <div class="content-main-wrap">
+                    <div class="content-table-wrap">
+
+                        <h2>{{ message.subject }}</h2>
+
+                        <hr>
+
+                        <p><strong>From:</strong> {{ message.sender }}</p>
+                        <p><strong>To:</strong> {{ message.receiver }}</p>
+                        <p><strong>Time:</strong> {{ message.created_at }}</p>
+
+                        <hr>
+
+                        <p>{{ message.body }}</p>
+                    </div>
+                </div>
+                <div class="content-bottom"></div>
+            </div>
+        </div>
+    </main>
+
+
+</body>
+</html>
