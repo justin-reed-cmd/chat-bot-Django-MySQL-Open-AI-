@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Message
 from django.utils.timezone import now
 from core.models import Message
@@ -61,6 +61,13 @@ def inbox(request):
  
  
 def sent_emails(request):
+    if request.method == "POST":
+        deleted_id = request.POST.get("deleted_id")
+
+        if deleted_id:
+            Message.objects.filter(id=deleted_id).delete()
+            return redirect("sent")
+
     messages = Message.objects.all().order_by('-created_at')
 
     return render(request, 'sent.html', {
@@ -102,7 +109,7 @@ from .utils import get_ai_reply
 
 def compose(request):
     if request.method == "POST":
-        sender = request.user
+        sender = request.POST.get("sender")
         receiver = request.POST.get("receiver")
         subject = request.POST.get("subject")
         body = request.POST.get("body")
@@ -129,3 +136,7 @@ def compose(request):
             created_at=timezone.now(),
             is_deleted=False
         )
+
+        return redirect("sent")
+
+    return redirect("inbox")
